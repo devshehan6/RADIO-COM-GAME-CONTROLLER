@@ -40,6 +40,22 @@ The project also includes a physical signal tower with four LEDs and an OLED dis
 
 > Keep the video files in the repository's `data/` folder using the filenames below. If your GitHub README renderer does not play the embedded videos, use the **Open video** links to view or download them.
 
+## 📦 Download (Ready-to-Run)
+
+Skip the Python setup — grab the pre-built Windows application.
+
+<div align="center">
+
+[![Download for Windows](https://img.shields.io/badge/⬇_Download-DevGammingTower.exe-00E0B0?style=for-the-badge&logo=windows&logoColor=white)](../../releases/latest/download/DevGammingTower.exe)
+
+**[⬇ Download DevGammingTower.exe](../../releases/latest/download/DevGammingTower.exe)**
+
+</div>
+
+> **Note:** This is a standalone Windows executable — no Python installation required. If Windows SmartScreen shows a warning, click **More info → Run anyway**.
+>
+> **Still need the source?** Scroll down to [Setup and Usage](#-setup-and-usage) for the manual Python + Arduino build instructions.
+
 
 ### 1. Signal Tower hardware
 
