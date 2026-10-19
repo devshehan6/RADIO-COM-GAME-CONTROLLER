@@ -1,0 +1,5 @@
+{
+    "port": "COM6",
+    "baud_rate": 115200,
+    "controller_type": "wasd"
+}
