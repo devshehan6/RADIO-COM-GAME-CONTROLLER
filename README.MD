@@ -119,7 +119,7 @@ radioCom/
 | A | **21** |
 | B | **20** |
 | C | **10** |
-| D | **9** |
+| D | **9** | 
 
 ### 📷 Circuit Diagram (Live Preview)
 
@@ -127,7 +127,7 @@ radioCom/
 
 📥 **Downloads:**
 - 🖼️ **Circuit image:** [`data/signelToverDiagram.png`](data/signelToverDiagram.png)
-- ✏️ **Editable draw.io source:** [`data/diagram.drawio`](data/diagram.drawio) — [**Open in draw.io**](https://app.diagrams.net/?url=https://raw.githubusercontent.com/devshehan6/radioCom/main/data/diagram.drawio)
+- ✏️ **Editable draw.io source:** [`data/diagram.drawio`](data/diagram.drawio) — [**Open in draw.io**](data/diagram.drawio)
 
 > ⚠️ If you use a 3.3V Arduino (ESP32), connect the RC receiver signal pins directly. For 5V boards, use a **voltage divider** on the receiver signal lines.
 
@@ -142,7 +142,7 @@ radioCom/
   pip install pyserial customtkinter pynput
   ```
 
-### Arduino
+### Arduino.
 - **Arduino IDE** (or PlatformIO)
 - Libraries (install via Library Manager):
   - `Adafruit GFX Library`
@@ -160,7 +160,7 @@ radioCom/
 
 ### 2. Set up the Python GUI
 ```bash
-git clone https://github.com/devshehan6/radioCom.git
+git clone https://github.com/devshehan6/RADIO-COM-GAME-CONTROLLER
 cd radioCom
 pip install pyserial customtkinter pynput
 python controller_gui.py
@@ -255,15 +255,15 @@ Example:
 
 | File | Description | Link |
 |---|---|---|
-| `tower.mp4` | The physical tower build & OLED effect | [▶ Open](https://github.com/devshehan6/radioCom/raw/main/data/tower.mp4) |
-| `connectAndLoadGame.mp4` | How to connect the tower and load a game | [▶ Open](https://github.com/devshehan6/radioCom/raw/main/data/connectAndLoadGame.mp4) |
-| `playGame.mp4` | Playing a game using the signal tower | [▶ Open](https://github.com/devshehan6/radioCom/raw/main/data/playGame.mp4) |
-| `signelToverDiagram.png` | Circuit diagram | [🖼 View](https://raw.githubusercontent.com/devshehan6/radioCom/main/data/signelToverDiagram.png) |
-| `diagram.drawio` | Editable draw.io schematic | [✏ Open in draw.io](https://app.diagrams.net/?url=https://raw.githubusercontent.com/devshehan6/radioCom/main/data/diagram.drawio) |
+| `tower.mp4` | The physical tower build & OLED effect | [▶ Open](data/tower.mp4) |
+| `connectAndLoadGame.mp4` | How to connect the tower and load a game | [▶ Open](data/connectAndLoadGame.mp4) |
+| `playGame.mp4` | Playing a game using the signal tower | [▶ Open](data/playGame.mp4) |
+| `signelToverDiagram.png` | Circuit diagram | [🖼 View](data/signelToverDiagram.png) |
+| `diagram.drawio` | Editable draw.io schematic | [✏ Open in draw.io](data/diagram.drawio) |
 
 ### 🖼 Diagram Preview
 
-![Signal Tower Diagram](https://raw.githubusercontent.com/devshehan6/radioCom/main/data/signelToverDiagram.png)
+![Signal Tower Diagram](data/signelToverDiagram.png)
 
 ---
 
@@ -296,20 +296,3 @@ Example:
 
 This project is provided for **educational & hobbyist use**.
 If you plan to redistribute, please keep the credits and add an `MIT` (or your preferred) license file.
-
----
-
-> ⭐ If you enjoyed this project, drop a star on the repo and share your build!
-> 📹 All demo videos are in [`data/`](https://github.com/devshehan6/radioCom/tree/main/data) — click any file to play it directly in GitHub's built-in player.
-
----
-
-### 🔑 Key Notes About Video Playback on GitHub
-
-| Where you view it | `.mp4` playback |
-|---|---|
-| **README (this page)** | ❌ GitHub does **not** render `<video>` or raw `.mp4` inline. The buttons above will download/open the file. |
-| **Click a file in `data/` on GitHub** | ✅ ✅ ✅ **Plays inline** with GitHub's built-in video player — this is the intended way to view demos. |
-| **`raw.githubusercontent.com` URL** | ❌ Downloads the file (some browsers may stream, but not embedded). |
-
-**➡️ Best workflow:** Navigate to [`data/`](https://github.com/devshehan6/radioCom/tree/main/data) and click any `.mp4` — GitHub streams it directly in your browser.
