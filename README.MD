@@ -46,9 +46,9 @@ Skip the Python setup — grab the pre-built Windows application.
 
 <div align="center">
 
-[![Download for Windows](https://img.shields.io/badge/⬇_Download-DevGammingTower.exe-00E0B0?style=for-the-badge&logo=windows&logoColor=white)](../../releases/latest/download/DevGammingTower.exe)
+[![Download for Windows](https://img.shields.io/badge/⬇_Download-DevGammingTower.exe-00E0B0?style=for-the-badge&logo=windows&logoColor=white)](dist/DevGammingTower.exe)
 
-**[⬇ Download DevGammingTower.exe](../../releases/latest/download/DevGammingTower.exe)**
+**[⬇ Download DevGammingTower.exe](dist/DevGammingTower.exe)**
 
 </div>
 
