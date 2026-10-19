@@ -305,3 +305,12 @@ Built as an electronics and programming project combining RC radio control, embe
 **If you find this project interesting, consider giving the repository a ⭐**
 
 </div>
+
+## 📜 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for the full text.
+
+You are free to use, modify, and distribute this project (including commercially), provided that the original copyright notice and this permission notice are included.
+
+```text
+Copyright (c) 2026 Dev Shehan
