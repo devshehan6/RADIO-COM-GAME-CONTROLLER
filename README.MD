@@ -1,298 +1,290 @@
-# 📡 Dev Shehan — Signal Tower
+<div align="center">
 
-> **RC Signal Tower → PC Game Controller**
->
-> A hybrid Arduino + Python project that turns an RC car receiver/transmitter pair into a fully working PC game controller. Point the RC controller at the tower, and the tower relays the input over USB serial to a Python GUI that presses real keyboard keys inside any game.
+# 🎮 Signal Tower
+### RC Controller → Arduino → PC Keyboard Emulator
 
----
+**Turn an existing RC car controller into a wireless game controller.**
 
-## 📖 Table of Contents
+A hardware–software project by **[Dev Shehan](https://github.com/devshehan6)**, built with Arduino and Python.
 
-- [Overview](#-overview)
-- [How It Works](#-how-it-works)
-- [Project Structure](#-project-structure)
-- [Hardware Requirements](#-hardware-requirements)
-- [Wiring / Schematic](#-wiring--schematic)
-- [Software Requirements](#-software-requirements)
-- [Installation](#-installation)
-- [Configuration](#-configuration)
-- [How to Use](#-how-to-use)
-- [Serial Protocol](#-serial-protocol)
-- [🎬 Media & Demos](#-media--demos)
-- [Troubleshooting](#-troubleshooting)
-- [Credits](#-credits)
-- [License](#-license)
+[![Python](https://img.shields.io/badge/Python-Desktop%20GUI-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Arduino](https://img.shields.io/badge/Arduino-Microcontroller-00979D?logo=arduino&logoColor=white)](https://www.arduino.cc/)
+[![Platform](https://img.shields.io/badge/Platform-Windows-0078D4?logo=windows&logoColor=white)](https://www.microsoft.com/windows)
+[![Interface](https://img.shields.io/badge/Interface-CustomTkinter-00E0B0)](https://customtkinter.tomschimansky.com/)
+
+</div>
 
 ---
 
-## 🧭 Overview
+## 📌 Overview
 
-This project takes the **receiver (RX) of an RC car** and uses its 4 output channels as digital inputs into an Arduino board. The Arduino then:
+**Signal Tower** reads button signals from an RC car receiver and sends them to a computer through USB serial communication. A Python desktop application converts the received signals into keyboard presses, allowing the RC controller to control compatible PC games.
 
-1. **Reads** the 4 channel signals (A, B, C, D)
-2. **Displays** them as filled/hollow balls on a 128×64 OLED
-3. **Drives** a 4-bulb "signal tower" animation (like a real traffic tower)
-4. **Streams** the 4-bit state to the PC over USB Serial (`115200` baud)
+The project also includes a physical signal tower with four LEDs and an OLED display. The display shows a startup animation, project branding, elapsed time, and the four input states.
 
-On the PC side, a **CustomTkinter GUI (Python)**:
+## ✨ Features
 
-- Reads the serial stream
-- Maps the bits to keyboard keys (**WASD** or **Arrow keys**)
-- Presses/releases them via `pynput`, so **any game** responds
-- Can **launch the game EXE** directly
-- Saves everything to a `config.json`
+- 📡 Reuses an RC car controller and receiver as the wireless input source.
+- 🔌 Sends four digital input states from the Arduino to the PC over USB serial.
+- ⌨️ Maps controller inputs to either **W/A/S/D** or **Arrow Keys**.
+- 🖥️ Dark-themed Python GUI built with CustomTkinter.
+- 🔎 Detects available serial/COM ports and lets you refresh the list.
+- ⚙️ Configures the COM port, baud rate, keyboard layout, and game executable.
+- 💾 Saves settings to `config.json`.
+- 🎮 Launches a selected game from the GUI.
+- 📟 OLED status screen with a welcome screen, project name, timer, and input indicators.
+- 💡 Four-LED animation for the physical signal tower.
+- 🧾 Live log showing serial signals and currently active keys.
 
-The result: **drive a PC game with an RC car controller.** 🎮🚗
+## 🎥 Project Videos
 
----
+> Keep the video files in the repository's `data/` folder using the filenames below. If your GitHub README renderer does not play the embedded videos, use the **Open video** links to view or download them.
 
-## ⚙️ How It Works
+### 1. Signal Tower hardware
 
+See the physical tower and its display.
+
+<video src="data/tower.mp4" controls width="100%"></video>
+
+[▶ Open / download `tower.mp4`](data/tower.mp4)
+
+### 2. Connect the device and launch a game
+
+Walkthrough of connecting the device and loading a game.
+
+<video src="data/connectAndLoadGame.mp4" controls width="100%"></video>
+
+[▶ Open / download `connectAndLoadGame.mp4`](data/connectAndLoadGame.mp4)
+
+### 3. Gameplay demonstration
+
+See the RC controller inputs being used to play a game.
+
+<video src="data/playGame.mp4" controls width="100%"></video>
+
+[▶ Open / download `playGame.mp4`](data/playGame.mp4)
+
+## 🧩 Circuit Diagram
+
+### Circuit image
+
+![Signal Tower circuit diagram](data/signelToverDiagram.png)
+
+### Editable diagram
+
+[📥 Download / open the editable Draw.io diagram](data/diagram.drawio)
+
+You can open the `.drawio` file with [diagrams.net](https://app.diagrams.net/) to inspect or edit the circuit diagram.
+
+## 🏗️ How It Works
+
+```text
+RC Controller
+     │  wireless radio signal
+     ▼
+RC Car Receiver
+     │  four digital output signals
+     ▼
+Arduino Signal Tower
+     ├── Reads the four input pins
+     ├── Updates the OLED display
+     ├── Runs the four-LED animation
+     └── Sends a 4-bit signal over USB serial
+                    │
+                    ▼
+             Python Desktop GUI
+             ├── Reads serial data
+             ├── Detects active inputs
+             └── Presses/releases PC keys
+                    │
+                    ▼
+               PC Game 🎮
 ```
- RC Controller ──2.4GHz──▶ RC Receiver ──▶ Arduino GPIO (A,B,C,D)
-                                              │
-                                              ├─▶ OLED (status UI)
-                                              ├─▶ 4 Bulbs (tower animation)
-                                              └─▶ USB Serial ──▶ Python GUI
-                                                                     │
-                                                                     ├─▶ pynput (W/A/S/D or arrows)
-                                                                     └─▶ Game EXE
+
+1. Press a direction button on the RC controller.
+2. The receiver changes its digital output signal(s).
+3. The Arduino reads the four input pins and sends their states through USB serial at **115200 baud**.
+4. The Python app reads the serial data and translates each input into a keyboard key.
+5. The selected game receives the keyboard input.
+
+## 🔢 Signal Format and Key Mapping
+
+The Arduino sends the inputs in this order:
+
+```text
+B C A D
 ```
 
-1. The RC transmitter sends stick/trigger input to the RC receiver.
-2. The receiver's PWM outputs are read on Arduino pins **21, 20, 10, 9** (A, B, C, D).
-3. Arduino serializes the 4 values as a 4-character `0/1` string every **50 ms**.
-4. The Python GUI (`pynput`) simulates key presses — the focused game reacts instantly.
-5. `1` state = **not pressed**, `0` state = **pressed** (inverted logic in the firmware).
+The Python application expects a four-character binary string. A `0` means the corresponding input is active, and a `1` means it is inactive.
 
----
+| Serial position | Arduino input | Python action | W/A/S/D mode | Arrow mode |
+|---|---|---|---|---|
+| 1 | B | Right (`R`) | `D` | `→` |
+| 2 | C | Forward (`F`) | `W` | `↑` |
+| 3 | A | Left (`L`) | `A` | `←` |
+| 4 | D | Backward (`B`) | `S` | `↓` |
 
-## 📁 Project Structure
+**Example:** `1111` means all four inputs are inactive. The Python app releases any keys that are no longer active.
 
-```
-radioCom/
-├── data/
-│   ├── connectAndLoadGame.mp4     # Demo: connecting & loading the game
-│   ├── diagram.drawio             # Editable circuit diagram (draw.io)
-│   ├── playGame.mp4               # Demo: playing a game with the tower
-│   ├── signelToverDiagram.png     # Circuit / schematic image
-│   └── tower.mp4                  # Demo: tower effect & OLED
-├── controller_gui.py              # Python CustomTkinter GUI (main app)
-├── signal_tower.ino               # Arduino firmware
-├── config.json                    # Auto-generated config (port, baud, keys)
-└── README.md
-```
+> **Important:** The mapping above follows the supplied Arduino and Python code. Confirm that your receiver wiring and controller directions match it.
 
-> Rename your files as needed — the above mirrors the original `data/` directory listing.
+## 🧰 Hardware
 
----
+The supplied sketch uses the following connections:
 
-## 🔌 Hardware Requirements
+| Component / signal | Arduino pin |
+|---|---:|
+| Receiver input A | 21 |
+| Receiver input B | 20 |
+| Receiver input C | 10 |
+| Receiver input D | 9 |
+| OLED SDA | 8 |
+| OLED SCL | 7 |
+| LED output 1 | 0 |
+| LED output 2 | 1 |
+| LED output 3 | 2 |
+| LED output 4 | 3 |
 
-| Component | Qty | Notes |
-|---|---|---|
-| Arduino board (ESP32 / Uno / Nano) | 1 | Code uses pins 0–3 for bulbs, 21/20/10/9 for inputs — matches **ESP32** |
-| SSD1306 OLED (128×64, I²C) | 1 | Address `0x3C` |
-| 4× LED / bulb module | 1 | Driven with `analogWrite` (PWM) |
-| RC car receiver (RX) | 1 | Outputs 4 channels |
-| RC transmitter (TX) | 1 | The "remote" |
-| Jumper wires + breadboard | — |  |
-| USB cable | 1 | For serial to PC |
+Other hardware:
+- RC car transmitter/controller and its compatible receiver
+- Arduino-compatible board that supports the pins and functions used by the sketch
+- 128 × 64 SSD1306 OLED display (I²C address `0x3C` in the supplied code)
+- Four LEDs with appropriate current-limiting resistors
+- USB cable for serial communication with the PC
+- Wiring and a suitable power supply
 
----
+**Board compatibility note:** The sketch uses `INPUT_PULLDOWN` and `analogWrite()`. Check that your specific Arduino-compatible board supports these features and the listed pin assignments before wiring. Pins `0` and `1` may also be used for serial communication on some boards, so verify the board pinout.
 
-## 🗺️ Wiring / Schematic
+## 💻 Software
 
-**OLED (I²C)** — ESP32 pins:
-| OLED | Arduino |
-|---|---|
-| VCC | 3.3V |
-| GND | GND |
-| SDA | **GPIO 8** |
-| SCL | **GPIO 7** |
+### Python desktop application
 
-**Bulbs (PWM):** `GPIO 0, 1, 2, 3`
+The GUI uses these Python packages:
 
-**RC Receiver → Arduino:**
-| RC Channel | Arduino GPIO |
-|---|---|
-| A | **21** |
-| B | **20** |
-| C | **10** |
-| D | **9** |
+- `pyserial` — serial-port communication
+- `customtkinter` — modern desktop interface
+- `pynput` — keyboard press/release control
 
-### 📷 Circuit Diagram (Live Preview)
+The remaining modules used by the Python code (`tkinter`, `time`, `json`, `os`, `threading`, and `subprocess`) are part of Python's standard library on supported desktop installations.
 
-![Signal Tower Circuit Diagram](data/signelToverDiagram.png)
+### Arduino libraries
 
-📥 **Downloads:**
-- 🖼️ **Circuit image:** [`data/signelToverDiagram.png`](data/signelToverDiagram.png)
-- ✏️ **Editable draw.io source:** [`data/diagram.drawio`](data/diagram.drawio) — [**Open in draw.io**](data/diagram.drawio)
+Install these libraries using the Arduino IDE Library Manager:
 
-> ⚠️ If you use a 3.3V Arduino (ESP32), connect the RC receiver signal pins directly. For 5V boards, use a **voltage divider** on the receiver signal lines.
+- **Adafruit GFX Library**
+- **Adafruit SSD1306**
 
----
+`Wire` is included with the Arduino platform/core.
 
-## 💻 Software Requirements
+## 🚀 Setup and Usage
 
-### Python (PC side)
-- Python **3.9+**
-- Packages:
-  ```bash
-  pip install pyserial customtkinter pynput
-  ```
+### 1. Upload the Arduino sketch
 
-### Arduino
-- **Arduino IDE** (or PlatformIO)
-- Libraries (install via Library Manager):
-  - `Adafruit GFX Library`
-  - `Adafruit SSD1306`
+1. Open the Arduino sketch in Arduino IDE.
+2. Install the Adafruit GFX and Adafruit SSD1306 libraries.
+3. Check the pin assignments against your board and wiring.
+4. Select the correct board and USB/serial port.
+5. Upload the sketch.
 
----
+### 2. Install Python dependencies
 
-## 🛠️ Installation
+Open a terminal in the folder containing the Python application and run:
 
-### 1. Flash the Arduino
-1. Open `signal_tower.ino` in Arduino IDE.
-2. Select your board (ESP32 Dev Module / Uno / etc.).
-3. Install `Adafruit GFX` + `Adafruit SSD1306` if prompted.
-4. Upload.
-
-### 2. Set up the Python GUI
 ```bash
-git clone https://github.com/devshehan6/RADIO-COM-GAME-CONTROLLER
-cd radioCom
-pip install pyserial customtkinter pynput
-python controller_gui.py
+python -m pip install pyserial customtkinter pynput
 ```
+
+If the system uses the Python launcher instead, use the Python command configured on your computer.
 
 ### 3. Connect the hardware
-- Plug the Arduino into your PC via USB.
-- Power the RC receiver and pair it with the RC transmitter.
-- Open the GUI → click **⟳ Refresh** to detect the COM port.
 
----
+1. Connect the Arduino to the computer with USB.
+2. Close Arduino Serial Monitor and any other program using the same COM port.
+3. Start the Python application.
+4. Click **Refresh** and select the Arduino's COM port.
+5. Set the baud rate to **115200**, matching the Arduino sketch.
 
-## ⚙️ Configuration
+### 4. Configure keyboard controls
 
-On first run, `config.json` is auto-generated in the same folder as `controller_gui.py`:
+- Choose **W A S D** or **Arrow Keys**.
+- Optionally browse for a game's `.exe` file.
+- Click **Save Config** to store your settings.
 
-```json
-{
-  "port": "COM6",
-  "baud_rate": 115200,
-  "controller_type": "wasd",
-  "game_path": ""
-}
+The application creates or updates `config.json` beside the Python script.
+
+### 5. Play a game
+
+1. Click **Start Controller**.
+2. Click **Run Game** if you selected a game executable, or launch your game normally.
+3. Make sure the game window has keyboard focus.
+4. Use the RC controller to control the game.
+5. Click **Stop Controller** when finished.
+
+## 🖥️ Python GUI
+
+The desktop application includes:
+
+- **COM Port** — choose the Arduino's serial port.
+- **Refresh** — rescan available serial ports.
+- **Baud Rate** — select the serial speed; it must match the Arduino sketch.
+- **Controller** — switch between W/A/S/D and arrow-key layouts.
+- **Game EXE / Browse** — choose a Windows game executable.
+- **Start / Stop Controller** — begin or stop reading controller signals.
+- **Run Game** — launch the selected executable.
+- **Save Config** — save application settings.
+- **Live Log** — display received signal states and active keys.
+
+## 📁 Repository Structure
+
+```text
+.
+├── README.md
+├── <python-app>.py
+├── <arduino-sketch>.ino
+└── data/
+    ├── connectAndLoadGame.mp4
+    ├── playGame.mp4
+    ├── tower.mp4
+    ├── signelToverDiagram.png
+    └── diagram.drawio
 ```
 
-| Key | Description |
+`<python-app>.py` and `<arduino-sketch>.ino` are placeholders for the actual filenames. Keep the media and diagram files in `data/` with the exact names shown above, or update the links in this README if you rename them.
+
+## 🛠️ Troubleshooting
+
+| Problem | What to check |
 |---|---|
-| `port` | Serial port (e.g. `COM6` on Windows, `/dev/ttyUSB0` on Linux). Numeric values like `"6"` are auto-normalized to `"COM6"`. |
-| `baud_rate` | Must match Arduino (`115200`). |
-| `controller_type` | `"wasd"` or `"arrow"` — maps bits to W/A/S/D or arrow keys. |
-| `game_path` | Full path to a game `.exe` (optional; enables the **🎮 Run Game** button). |
+| No COM port appears | Check the USB cable, board connection, drivers, and Device Manager; then click **Refresh**. |
+| Serial port fails to open | Close Arduino Serial Monitor and other programs using the port. Confirm the selected COM port and baud rate. |
+| No keyboard input in game | Start the controller, focus the game window, verify the selected key layout, and check the Live Log. |
+| Keys remain active unexpectedly | Stop the controller to release tracked keys, then check receiver signals and the serial connection. |
+| Game does not launch | Confirm that the selected `.exe` path exists and that the game can be launched directly. |
+| OLED is blank | Check SDA/SCL wiring, power, the I²C address (`0x3C`), and the installed display libraries. |
+| Inputs appear reversed | Verify receiver-to-Arduino wiring and the B-C-A-D serial order, then check the key mapping. |
+| LEDs do not animate | Check LED wiring, current-limiting resistors, pin support, and the selected board's `analogWrite()` behavior. |
 
-> You can also edit these in the GUI and click **💾 Save Config**.
+## ⚠️ Notes and Limitations
 
----
+- The project is designed around the signal format and pin assignments in the supplied source code.
+- The Python code uses Windows-style COM ports and launches Windows `.exe` files.
+- Some games, especially those running with elevated permissions, may not accept simulated keyboard input from a normal-permission application. Only use this with games and software where keyboard automation is permitted.
+- Do not connect receiver outputs directly until their voltage levels are confirmed to be safe for the selected board's input pins.
+- Confirm the board pinout before using pins `0`–`3`, `7`–`10`, `20`–`21`; pin capabilities vary by board.
+- The project has not been independently tested across every board, operating system, or game.
 
-## 🎮 How to Use
+## 👨‍💻 Author
 
-1. **Launch** `controller_gui.py`.
-2. **Select** the COM port and baud rate (default `115200`).
-3. **Choose** controller type: **WASD** or **Arrow Keys**.
-4. *(Optional)* **Browse** and pick a game `.exe` → enables one-click launch.
-5. Click **▶ Start Controller**.
-6. **Focus your game window** (click into it) — the GUI logs incoming signals.
-7. Move the RC sticks → the game character moves.
-8. Click **■ Stop Controller** to stop and release all keys.
+**Dev Shehan**
 
-**Status indicators**
-- 🟢 Green dot = controller running
-- ⚪ Grey dot = idle
-- Live log shows the 4-bit signal + currently active keys
+- GitHub: [@devshehan6](https://github.com/devshehan6)
 
----
-
-## 📡 Serial Protocol
-
-Every **50 ms**, Arduino sends a single line:
-
-```
-<B><C><A><D>\n
-```
-
-Example:
-
-| Serial | Active Keys (WASD mode) |
-|---|---|
-| `1111` | none |
-| `0111` | **W** (forward) |
-| `1011` | **A** (left) |
-| `1101` | **D** (right) |
-| `1110` | **S** (back) |
-| `0000` | W + A + D + S (all) |
-
-> **Logic:** `0` = key **pressed**, `1` = key **released**.
-> The GUI replaces `,` and spaces, so `1,1,1,1` and `1111` are equivalent.
+Built as an electronics and programming project combining RC radio control, embedded systems, serial communication, and desktop automation.
 
 ---
 
-## 🎬 Media & Demos
+<div align="center">
 
-### 🎥 Watch the Demos
+**If you find this project interesting, consider giving the repository a ⭐**
 
-| Demo | Preview / Play |
-|---|---|
-| **Tower Build & OLED** | [![Tower Demo](https://img.shields.io/badge/▶_Watch-tower.mp4-00e0b0?style=for-the-badge&logo=video)](https://github.com/devshehan6/radioCom/raw/main/data/tower.mp4) |
-| **Connect & Load Game** | [![Connect Demo](https://img.shields.io/badge/▶_Watch-connectAndLoadGame.mp4-8be9fd?style=for-the-badge&logo=video)](https://github.com/devshehan6/radioCom/raw/main/data/connectAndLoadGame.mp4) |
-| **Playing a Game** | [![Play Demo](https://img.shields.io/badge/▶_Watch-playGame.mp4-f39c12?style=for-the-badge&logo=video)](https://github.com/devshehan6/radioCom/raw/main/data/playGame.mp4) |
-
-> **💡 Tip:** GitHub **cannot play `.mp4` files inline** inside a README. The buttons above open/download the video directly. To preview them inside the repo, simply **click the file** in the `data/` folder — GitHub will then show the built-in video player.
-
-### 📁 Direct File Links
-
-| File | Description | Link |
-|---|---|---|
-| `tower.mp4` | The physical tower build & OLED effect | [▶ Open](data/tower.mp4) |
-| `connectAndLoadGame.mp4` | How to connect the tower and load a game | [▶ Open](data/connectAndLoadGame.mp4) |
-| `playGame.mp4` | Playing a game using the signal tower | [▶ Open](data/playGame.mp4) |
-| `signelToverDiagram.png` | Circuit diagram | [🖼 View](data/signelToverDiagram.png) |
-| `diagram.drawio` | Editable draw.io schematic | [✏ Open in draw.io](data/diagram.drawio) |
-
-### 🖼 Diagram Preview
-
-![Signal Tower Diagram](data/signelToverDiagram.png)
-
----
-
-## 🩺 Troubleshooting
-
-| Problem | Fix |
-|---|---|
-| **Port not detected** | Click **⟳ Refresh**. Check USB cable/drivers. On Linux use `/dev/ttyUSB0`. |
-| **GUI shows `Read error`** | Wrong baud rate, or another program has the port open. Close Arduino Serial Monitor. |
-| **Keys not working in game** | Make sure the **game window has focus**. Run the GUI as **Administrator** (Windows) — some games ignore simulated input otherwise. |
-| **Stuck key** | Click **■ Stop Controller** — it releases all keys. |
-| **OLED blank** | Verify SDA=8 / SCL=7 and address `0x3C`. Run an I²C scanner. |
-| **Bulbs not animating** | Confirm bulbs on GPIO `0,1,2,3` and PWM-capable pins. |
-| **Wrong direction mapping** | Swap keys by editing `build_keymap()` in the GUI, or change the bit order in Arduino's `Serial.print` block. |
-| **Videos won't play** | GitHub README cannot stream `.mp4` inline. Open the file directly in the `data/` folder (click it on GitHub) — GitHub has a built-in player for that view. |
-
----
-
-## 🏆 Credits
-
-- **Project by:** [devshehan6](https://github.com/devshehan6)
-- **GUI design:** CustomTkinter
-- **Key injection:** [`pynput`](https://pypi.org/project/pynput/)
-- **OLED:** Adafruit GFX + SSD1306 libraries
-- **Inspiration:** RC car receivers reused as HID input devices
-
----
-
-## 📜 License
-
-This project is provided for **educational & hobbyist use**.
-If you plan to redistribute, please keep the credits and add an `MIT` (or your preferred) license file.
+</div>
