@@ -40,6 +40,7 @@ The project also includes a physical signal tower with four LEDs and an OLED dis
 
 > Keep the video files in the repository's `data/` folder using the filenames below. If your GitHub README renderer does not play the embedded videos, use the **Open video** links to view or download them.
 
+
 ### 1. Signal Tower hardware
 
 See the physical tower and its display.
