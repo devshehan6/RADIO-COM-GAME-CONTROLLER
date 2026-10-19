@@ -123,7 +123,7 @@ radioCom/
 
 ### 📷 Circuit Diagram (Live Preview)
 
-![Signal Tower Circuit Diagram](https://raw.githubusercontent.com/devshehan6/radioCom/main/data/signelToverDiagram.png)
+![Signal Tower Circuit Diagram](data/signelToverDiagram.png)
 
 📥 **Downloads:**
 - 🖼️ **Circuit image:** [`data/signelToverDiagram.png`](data/signelToverDiagram.png)
