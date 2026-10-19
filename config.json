@@ -2,5 +2,5 @@
     "port": "COM6",
     "baud_rate": 115200,
     "controller_type": "wasd",
-    "game_path": "E:/games/farcry3/FarCry 3/FarCry 3/bin/farcry3.exe"
+    "game_path": ""
 }
